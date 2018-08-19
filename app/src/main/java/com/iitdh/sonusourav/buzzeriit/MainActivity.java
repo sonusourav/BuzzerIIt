@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             assert user != null;
-                            Toast.makeText(MainActivity.this, "User Signed In" + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, " Signed In as" + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(MainActivity.this, HomeActivity.class));
 
                         } else {
