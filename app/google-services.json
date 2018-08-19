@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "39272196724",
+    "firebase_url": "https://buzzeriit.firebaseio.com",
+    "project_id": "buzzeriit",
+    "storage_bucket": "buzzeriit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:39272196724:android:09e560d304728895",
+        "android_client_info": {
+          "package_name": "com.iitdh.sonusourav.buzzeriit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "39272196724-hj99qcmpqqohicebs65vi2fde50oi0o1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iitdh.sonusourav.buzzeriit",
+            "certificate_hash": "23cbff020bf483b9e17f1806e316d620251246fb"
+          }
+        },
+        {
+          "client_id": "39272196724-adbcups1bm241eijef909nm0b3f1h8gj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOqGOgjYDHaawqAjPFWVbOzgUU4IQspcc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "39272196724-adbcups1bm241eijef909nm0b3f1h8gj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
