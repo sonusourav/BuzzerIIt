@@ -1,6 +1,7 @@
 package com.iitdh.sonusourav.buzzeriit;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,9 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_splash);
 
         if (savedInstanceState != null) {
@@ -31,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
          if(splash!=null){
              Glide.with(this)
                      .asGif()
-                     .load(R.drawable.quiz_splash)
+                     .load(R.drawable.quiz_gif)
                      .into(splash)
              ;
          }
@@ -40,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                final Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                final Intent mainIntent = new Intent(SplashActivity.this, LoginActivity.class);
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();
             }

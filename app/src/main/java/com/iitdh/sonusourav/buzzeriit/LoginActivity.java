@@ -1,6 +1,7 @@
 package com.iitdh.sonusourav.buzzeriit;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -31,7 +32,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     //a constant for detecting the login intent result
     private static final int RC_SIGN_IN = 234;
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.acitvity_login);
         signInButton=findViewById(R.id.sign_in_button);
 
@@ -58,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Animation shake = AnimationUtils.loadAnimation(MainActivity.this, R.anim.translate);
-                Animation fadeIn = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fadeout);
+                Animation shake = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.translate);
+                Animation fadeIn = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.fadeout);
 
                 signInButton.setVisibility(View.VISIBLE);
                 quizImage.setVisibility(View.VISIBLE);
@@ -132,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 //authenticating with firebase
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -153,13 +157,13 @@ public class MainActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
 
                             assert user != null;
-                            Toast.makeText(MainActivity.this, " Signed In as" + user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(MainActivity.this, HomeActivity.class));
+                            Toast.makeText(LoginActivity.this, " Signed In as" + user.getDisplayName(), Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
 
                         }

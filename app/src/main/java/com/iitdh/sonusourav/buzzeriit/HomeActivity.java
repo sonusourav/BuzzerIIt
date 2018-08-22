@@ -4,25 +4,34 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.graphics.PorterDuff;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -41,12 +50,14 @@ public class HomeActivity extends AppCompatActivity {
     public SharedPreferences pref;
     public SharedPreferences.Editor editor;
     public static String PREFS_NAME = "pref";
+    String qsNumber;
 
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_home);
 
         mAuth = FirebaseAuth.getInstance();
@@ -70,7 +81,7 @@ public class HomeActivity extends AppCompatActivity {
             textEmail.setText(user.getEmail());
         }else
         {
-            startActivity(new Intent(HomeActivity.this,MainActivity.class));
+            startActivity(new Intent(HomeActivity.this,LoginActivity.class));
             finish();
         }
 
@@ -90,14 +101,48 @@ public class HomeActivity extends AppCompatActivity {
                         v.invalidate();
                         mp.start();
                         ++number;
+
+
+
+
                         editor.putString("number", number+"");
                         editor.apply();
 
-                        DateFormat df = new SimpleDateFormat("d MMM yyyy, HH:mm:ss", Locale.US);
-                        date = df.format(Calendar.getInstance().getTime());
                         assert user != null;
-                        String qsNumber=pref.getString("number",0+"");
-                        databaseReference.child("QuestionNumber"+qsNumber).child(Objects.requireNonNull(user.getDisplayName())).setValue(date);
+                         qsNumber=pref.getString("number",0+"");
+
+
+
+
+                       databaseReference.child("QuestionNumber"+qsNumber).child(Objects.requireNonNull(user.getDisplayName())).setValue(ServerValue.TIMESTAMP);
+
+                        databaseReference.child("QuestionNumber"+qsNumber).child(Objects.requireNonNull(user.getDisplayName())).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                Log.d("datasnapshot", Objects.requireNonNull(dataSnapshot.getValue()).toString());
+                                String longV = dataSnapshot.getValue().toString();
+                                long millisecond = Long.parseLong(longV);
+
+                                DateFormat df = new SimpleDateFormat("d MMM yyyy, hh:mm:ss::SS a", Locale.US);
+                                date = df.format(new Date(millisecond));
+
+                                databaseReference.child("QuestionNumber"+qsNumber).child(Objects.requireNonNull(user.getDisplayName())).setValue(date);
+
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                Toast.makeText(getApplicationContext(),"Network error!",Toast.LENGTH_SHORT).show();
+                            }
+
+
+                        });
+
+
+
 
                         break;
                     }
@@ -127,7 +172,7 @@ public class HomeActivity extends AppCompatActivity {
         //opening the login activity
         if (mAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
@@ -146,5 +191,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+    }
 
 }
